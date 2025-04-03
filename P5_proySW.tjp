@@ -26,6 +26,7 @@ project pSix "Web Game" 2024-12-15 +6m {
   # We want to compare the baseline scenario to one with the current one.
   scenario baseline "Plan" {
     scenario actual "Actual"
+    scenario initial "Initial"
   }
 }
 
@@ -327,7 +328,7 @@ taskreport overview "" {
 
 # Informe de planificacion inicial.
 taskreport initialPlan "" {
-  scenarios plan
+  scenarios initial
   headline "Initial Project Plan"
   columns bsi { title 'WBS' },
           name, start, end, effort, cost,
