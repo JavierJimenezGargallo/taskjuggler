@@ -5,7 +5,7 @@
  * some elements of it
  */
 
-project pSix "Web Game"  2024-12-15 +5m {
+project pSix "Web Game"  2024-04-03 +5m {
   # Set the default time zone for the project. If not specified, UTC
   # is used.
   timezone "Europe/Paris"
@@ -19,13 +19,22 @@ project pSix "Web Game"  2024-12-15 +5m {
   # the project reports. If not specified, the current day will be
   # used, but this will likely be outside of the project range, so it
   # can't be seen in the reports.
-  now 2025-02-25-13:00
+  now 2025-04-03-13:00
   # The currency for all money values is the US Dollar.
   currency "EUR"
 
   # We want to compare the baseline scenario to one with the current one.
   scenario plan "Plan" {
     scenario actual "Actual"
+  }
+
+  # Informe de planificacion inicial.
+  reports {
+    report plan "PlanInicial" {
+      formats html, pdf
+      columns bsi, name, start, end, effort, chart
+      timeformat "%Y-%m-%d"
+    }
   }
 }
 
@@ -69,6 +78,12 @@ resource dev3 "Peter Green" {
   email "kkk@unizar.es"
 }
 
+# Recurso anadido
+resource dev4 "Javier Jimenez" { 
+  email "869756@unizar.es"
+  rate 4h/d
+}
+
 # Now we specify the work packages. The whole project is described as
 # a task that contains subtasks. These subtasks are then broken down
 # into smaller tasks and so on. The innermost tasks describe the real
@@ -89,6 +104,42 @@ task WMGame "Web & Mobile Game" {
       effort 2d
       allocate boss
       depends WMGame.deliveries.start
+  }
+
+  # Nueva tarea: Frontend Movil
+  task tmobileF "Mobile Front End" {
+    purge chargeset
+    chargeset mFront
+    responsible dev3
+    depends WMGame.tback.tBEd
+    
+    task tMobGUId "Mobile GUI Design" {
+      effort 8d
+      allocate dev3, dev4
+    }
+    task tMobFEc "Mobile Front End Construction" {
+      effort 14d
+      allocate dev3, dev4
+      depends WMGame.tmobileF.tMobGUId
+    }
+  }
+
+  # Nueva tarea: Despliegue en Cloud
+  task tcloud "Cloud Deployment" {
+    purge chargeset
+    chargeset back
+    responsible dev1
+    depends WMGame.tback.tbackDev
+    
+    task tCloudSel "Cloud Provider Selection" {
+      effort 5d
+      allocate dev1, dev4
+    }
+    task tCloudConfig "Cloud Configuration" {
+      effort 10d
+      allocate dev1
+      depends WMGame.tcloud.tCloudSel
+    }
   }
 
   task tback "Back End" {
@@ -147,14 +198,20 @@ task WMGame "Web & Mobile Game" {
     }    
   }
 
+  # Pruebas de aceptación modificadas (post 15 mayo)
   task ttest "Acceptance tests" {
-      effort 10d
-      allocate boss
-      allocate dev2
-      actual:effort 20d
-      depends WMGame.twebF
-      depends WMGame.tback
-      }
+    start 2025-05-15
+    effort 10d
+    allocate boss, dev2, dev4  
+    depends WMGame.twebF, WMGame.tback, WMGame.tmobileF  
+    
+    # Incidencia añadida
+    journalentry 2025-04-03 "Esperar feedback cliente" {
+      author dev4
+      alert yellow
+      summary "Se debe esperar feedback del cliente antes de iniciar pruebas"
+    }
+  }
 
     
   task deliveries "Milestones" {
