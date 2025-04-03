@@ -24,9 +24,8 @@ project pSix "Web Game" 2024-12-15 +6m {
   currency "EUR"
 
   # We want to compare the baseline scenario to one with the current one.
-  scenario baseline "Plan" {
+  scenario plan "Plan" {
     scenario actual "Actual"
-    scenario initial "Initial"
   }
 }
 
@@ -312,7 +311,7 @@ textreport frame "" {
 
 # A traditional Gantt chart with a project overview.
 taskreport overview "" {
-  scenarios actual
+  scenarios plan, actual
   headline "Current Project Plan"
   columns bsi { title 'WBS' },
           name, start, end, effort, cost,
@@ -328,7 +327,7 @@ taskreport overview "" {
 
 # Informe de planificacion inicial.
 taskreport initialPlan "" {
-  scenarios initial
+  scenarios plan
   headline "Initial Project Plan"
   columns bsi { title 'WBS' },
           name, start, end, effort, cost,
