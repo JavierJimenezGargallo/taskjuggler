@@ -27,14 +27,14 @@ project pSix "Web Game" 2025-04-03 +5m {
   scenario baseline "Plan" {
     scenario actual "Actual"
   }
+}
 
-  # Informe de planificacion inicial.
-  reports {
-    report initial "InitialPlan" {
-      formats html, pdf
-      columns bsi, name, start, end, effort, chart
-      timeformat "%Y-%m-%d"
-    }
+# Informe de planificacion inicial.
+reports {
+  report initial "InitialPlan" {
+    formats html, pdf
+    columns bsi, name, start, end, effort, chart
+    timeformat "%Y-%m-%d"
   }
 }
 
@@ -45,7 +45,6 @@ copyright "Creative Commons 2025 Proyecto Software - Unizar."
 # resource. We specify this, so that we can do a good calculation of
 # the costs of the project.
 rate 145.2
-
 
 # In order to do a simple profit and loss analysis of the project we
 # specify accounts. One for the development costs, one for the
