@@ -5,7 +5,7 @@
  * some elements of it
  */
 
-project pSix "Web Game"  2024-04-03 +5m {
+project pSix "Web Game" 2025-04-03 +5m {
   # Set the default time zone for the project. If not specified, UTC
   # is used.
   timezone "Europe/Paris"
@@ -24,13 +24,13 @@ project pSix "Web Game"  2024-04-03 +5m {
   currency "EUR"
 
   # We want to compare the baseline scenario to one with the current one.
-  scenario plan "Plan" {
+  scenario baseline "Plan" {
     scenario actual "Actual"
   }
 
   # Informe de planificacion inicial.
   reports {
-    report plan "PlanInicial" {
+    report initial "InitialPlan" {
       formats html, pdf
       columns bsi, name, start, end, effort, chart
       timeformat "%Y-%m-%d"
@@ -81,7 +81,7 @@ resource dev3 "Peter Green" {
 # Recurso anadido, me anado como desarrollador
 resource dev4 "Javier Jimenez" { 
   email "869756@unizar.es"
-  rate 4h/d
+  rate 4.0h/d
 }
 
 # Now we specify the work packages. The whole project is described as
@@ -143,7 +143,7 @@ task WMGame "Web & Mobile Game" {
   }
 
   task tback "Back End" {
-    # It is necessary to “purge” the “chargeset” because it has been assigned previously to other variable 
+    # It is necessary to "purge" the "chargeset" because it has been assigned previously to other variable 
     purge chargeset
     chargeset back
     responsible dev1
