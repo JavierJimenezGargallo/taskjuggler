@@ -78,7 +78,7 @@ resource dev3 "Peter Green" {
   email "kkk@unizar.es"
 }
 
-# Recurso anadido
+# Recurso anadido, me anado como desarrollador
 resource dev4 "Javier Jimenez" { 
   email "869756@unizar.es"
   rate 4h/d
