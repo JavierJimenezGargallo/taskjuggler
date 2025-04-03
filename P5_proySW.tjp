@@ -5,7 +5,7 @@
  * some elements of it
  */
 
-project pSix "Web Game" 2025-04-03 +5m {
+project pSix "Web Game" 2024-12-15 +6m {
   # Set the default time zone for the project. If not specified, UTC
   # is used.
   timezone "Europe/Paris"
@@ -29,15 +29,6 @@ project pSix "Web Game" 2025-04-03 +5m {
   }
 }
 
-# Informe de planificacion inicial.
-reports {
-  report initial "InitialPlan" {
-    formats html, pdf
-    columns bsi, name, start, end, effort, chart
-    timeformat "%Y-%m-%d"
-  }
-}
-
 # This is not a real copyright for this file. It's just used as an example.
 copyright "Creative Commons 2025 Proyecto Software - Unizar."
 
@@ -45,6 +36,7 @@ copyright "Creative Commons 2025 Proyecto Software - Unizar."
 # resource. We specify this, so that we can do a good calculation of
 # the costs of the project.
 rate 145.2
+
 
 # In order to do a simple profit and loss analysis of the project we
 # specify accounts. One for the development costs, one for the
@@ -80,7 +72,8 @@ resource dev3 "Peter Green" {
 # Recurso anadido, me anado como desarrollador
 resource dev4 "Javier Jimenez" { 
   email "869756@unizar.es"
-  rate 4.0h/d
+  rate 120
+  limits { dailymax 4h }
 }
 
 # Now we specify the work packages. The whole project is described as
@@ -109,17 +102,22 @@ task WMGame "Web & Mobile Game" {
   task tmobileF "Mobile Front End" {
     purge chargeset
     chargeset mFront
-    responsible dev3
+    responsible dev4
     depends WMGame.tback.tBEd
     
     task tMobGUId "Mobile GUI Design" {
       effort 8d
-      allocate dev3, dev4
+      allocate dev4, dev3
     }
     task tMobFEc "Mobile Front End Construction" {
       effort 14d
-      allocate dev3, dev4
+      allocate dev4, dev2
       depends WMGame.tmobileF.tMobGUId
+    }
+    task tMobFEt "Mobile Front End Test" {
+      effort 8d
+      allocate dev1, dev4
+      depends WMGame.tmobileF.tMobFEc
     }
   }
 
@@ -201,8 +199,9 @@ task WMGame "Web & Mobile Game" {
   task ttest "Acceptance tests" {
     start 2025-05-15
     effort 10d
-    allocate boss, dev2, dev4  
-    depends WMGame.twebF, WMGame.tback, WMGame.tmobileF  
+    allocate boss, dev2, dev4
+    actual:effort 20d  
+    depends WMGame.twebF, WMGame.tback, WMGame.tmobileF, WMGame.tcloud
     
     # Incidencia añadida
     journalentry 2025-04-03 "Esperar feedback cliente" {
@@ -326,6 +325,19 @@ taskreport overview "" {
   caption 'All effort values are in man days.'
 }
 
+# Informe de planificacion inicial.
+taskreport initialPlan "" {
+  scenarios plan
+  headline "Initial Project Plan"
+  columns bsi { title 'WBS' },
+          name, start, end, effort, cost,
+          revenue, chart { ${TaskTip} }
+  timeformat "%a %Y-%m-%d"
+  loadunit days
+  hideresource @all
+  balance cost rev
+  caption 'All effort values are in man days (initial plan).'
+}
 
 # Macro to set the background color of a cell according to the alert
 # level of the task.
